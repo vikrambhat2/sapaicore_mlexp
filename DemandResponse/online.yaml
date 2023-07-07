@@ -12,7 +12,7 @@ metadata:
     ai.sap.com/version: "2.0"
 spec:
   imagePullSecrets:
-    - name: dckr_pat_CC8G3821W0YjqqD8n1_rvRvfc2k # your docker registry secret
+    - name: dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlI # your docker registry secret
   entrypoint: mypipeline
   templates:
   - name: mypipeline
