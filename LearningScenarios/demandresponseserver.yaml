@@ -1,7 +1,7 @@
 apiVersion: ai.sap.com/v1alpha1
 kind: ServingTemplate
 metadata:
-  name: server-pipeline-vikrambhat2
+  name: server-pipeline-vikrambhat3
   annotations:
     scenarios.ai.sap.com/description: Learning to predict demand response
     scenarios.ai.sap.com/name: Demand Response on SAP
