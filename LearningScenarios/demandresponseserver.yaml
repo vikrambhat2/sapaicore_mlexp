@@ -11,35 +11,19 @@ metadata:
     scenarios.ai.sap.com/id: demand-datalines
     ai.sap.com/version: '1.0'
 spec:
-  inputs:
-    artifacts:
-      - name: demandresponsemodel
-    parameters:
-      - name: greetmessage
-        type: string
-  template:
-    apiVersion: serving.kserve.io/v1beta1
-    metadata:
-      annotations:
-        autoscaling.knative.dev/metric: concurrency
-        autoscaling.knative.dev/target: 1
-        autoscaling.knative.dev/targetBurstCapacity: 0
-      labels:
-        ai.sap.com/resourcePlan: starter
-    spec:
-      predictor:
-        imagePullSecrets:
-          - name: dckr_pat_CC8G3821W0YjqqD8n1_rvRvfc2k
-        minReplicas: 1
-        maxReplicas: 5
-        containers:
-          - name: kserve-container
-            image: docker.io/vikrambhat2/vb_model
-            ports:
-              - containerPort: 3000
-                protocol: TCP
-            command:
-              - /bin/sh
-              - '-c'
-            args:
-              - python /app/src/main.py
+  predictor:
+    imagePullSecrets:
+      - name: dckr_pat_CC8G3821W0YjqqD8n1_rvRvfc2k
+    minReplicas: 1
+    maxReplicas: 5
+    containers:
+      - name: kserve-container
+        image: docker.io/vikrambhat2/vb_model
+        ports:
+          - containerPort: 3000
+            protocol: TCP
+        command:
+          - /bin/sh
+          - '-c'
+        args:
+          - python /app/src/main.py
