@@ -1,49 +1,29 @@
-apiVersion: ai.sap.com/v1alpha1
-kind: ServingTemplate
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
 metadata:
-  name: server-pipeline-vikrambhat-2 # executable ID, must be unique across your SAP AI Core instance, for example use `server-pipeline-yourname-1234`
+  name: vikrambhat-pipeline # Executable ID (max length 64 lowercase-hyphen-separated), please modify this to any value if you are not the only user of your SAP AI Core instance. Example: `first-pipeline-1234`
   annotations:
-    scenarios.ai.sap.com/description: "Learning to predict demand response"
-    scenarios.ai.sap.com/name: "Demand Response on SAP"
-    executables.ai.sap.com/description: "Create online server to make live predictions"
-    executables.ai.sap.com/name: "model executable"
+    scenarios.ai.sap.com/description: "Introduction to SAP AI Core with demand response"
+    scenarios.ai.sap.com/name: "demand response"
+    executables.ai.sap.com/description: "predicts demand response"
+    executables.ai.sap.com/name: "demand response Pipeline"
   labels:
-    scenarios.ai.sap.com/id: "demand-datalines"
+    scenarios.ai.sap.com/id: "machine learning"
     ai.sap.com/version: "1.0"
 spec:
-  inputs:
-    artifacts:
-      - name: demandresponsemodel # placeholder name, do not add `-` in value use only alphanumeric chars
-    parameters:
-      - name: greetmessage # placeholder name
-        type: string # required for every parameters
-  template:
-    apiVersion: "serving.kserve.io/v1beta1"
-    metadata:
-      annotations: |
-        autoscaling.knative.dev/metric: concurrency   # condition when to scale
-        autoscaling.knative.dev/target: 1
-        autoscaling.knative.dev/targetBurstCapacity: 0
-      labels: |
-        ai.sap.com/resourcePlan: starter # computing power
-    spec: |
-    entrypoint: mypipeline
-      templates:
-        - name: mypipeline
-        steps:
-        - - name: greet
+  entrypoint: mypipeline
+  templates:
+  - name: mypipeline
+    steps:
+    - - name: greet
         template: greeter
-      predictor:
-        imagePullSecrets:
-          - name: dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlI   # your docker registry secret
-        minReplicas: 1
-        maxReplicas: 5    # how much to scale
-        containers:
-        - name: kserve-container
-          image: "docker.io/vikrambhat2/vb_model"
-          ports:
-            - containerPort: 3000    # customizable port
-              protocol: TCP
-          command: ["/bin/sh", "-c"]
-          args:
-          	- "python /app/src/main.py"
+  predictor:
+    imagePullSecrets:
+      - name: dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlI   # your docker registry secret
+
+  - name: greeter
+    container:
+      image: "docker.io/vikrambhat2/vb_model"
+      command: ["/bin/sh", "-c"]
+      args:
+        - "python /app/src/main.py"
