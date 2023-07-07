@@ -12,7 +12,7 @@ metadata:
     ai.sap.com/version: '1.0'
 spec:
   imagePullSecrets:
-    - name: dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlI
+    - name: dckr_pat_CC8G3821W0YjqqD8n1_rvRvfc2k
   entrypoint: mypipeline
   templates:
     - name: mypipeline
