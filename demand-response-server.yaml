@@ -1,7 +1,7 @@
 apiVersion: ai.sap.com/v1alpha1
 kind: ServingTemplate
 metadata:
-  name: server-pipeline-vikrambhat2 # executable ID, must be unique across your SAP AI Core instance, for example use `server-pipeline-yourname-1234`
+  name: server-pipeline-vikrambhat-2 # executable ID, must be unique across your SAP AI Core instance, for example use `server-pipeline-yourname-1234`
   annotations:
     scenarios.ai.sap.com/description: "Learning to predict demand response"
     scenarios.ai.sap.com/name: "Demand Response on SAP"
@@ -27,6 +27,12 @@ spec:
       labels: |
         ai.sap.com/resourcePlan: starter # computing power
     spec: |
+    entrypoint: mypipeline
+      templates:
+        - name: mypipeline
+        steps:
+        - - name: greet
+        template: greeter
       predictor:
         imagePullSecrets:
           - name: dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlI   # your docker registry secret
