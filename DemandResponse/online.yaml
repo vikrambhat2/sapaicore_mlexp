@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: ml-pipeline # executable id, must be unique across all your workflows (YAML files), please modify this to any value (e.g. code-pipeline-12345) if you are not the only user of your SAP AI Core instance.
+  name: ml-pipeline-2 # executable id, must be unique across all your workflows (YAML files), please modify this to any value (e.g. code-pipeline-12345) if you are not the only user of your SAP AI Core instance.
   annotations:
     scenarios.ai.sap.com/description: "Tutorial to add demand response code to SAP AI Core"
     scenarios.ai.sap.com/name: "Demand response Code "
@@ -22,7 +22,7 @@ spec:
 
   - name: mycodeblock1
     container:
-      image: docker.io/vikrambhat2/ml-model:latest # Your docker image name
+      image: docker.io/vikrambhat2/vb_ml_model:latest # Your docker image name
       command: ["/bin/sh", "-c"]
       args:
         - "python /app/src/main.py"
