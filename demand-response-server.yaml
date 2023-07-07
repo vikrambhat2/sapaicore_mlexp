@@ -1,29 +1,29 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: vikrambhat-pipeline # Executable ID (max length 64 lowercase-hyphen-separated), please modify this to any value if you are not the only user of your SAP AI Core instance. Example: `first-pipeline-1234`
+  name: vikrambhat-pipeline
   annotations:
-    scenarios.ai.sap.com/description: "Introduction to SAP AI Core with demand response"
-    scenarios.ai.sap.com/name: "demand response"
-    executables.ai.sap.com/description: "predicts demand response"
-    executables.ai.sap.com/name: "demand response Pipeline"
+    scenarios.ai.sap.com/description: Introduction to SAP AI Core with demand response
+    scenarios.ai.sap.com/name: demand response
+    executables.ai.sap.com/description: predicts demand response
+    executables.ai.sap.com/name: demand response Pipeline
   labels:
-    scenarios.ai.sap.com/id: "machine learning"
-    ai.sap.com/version: "1.0"
+    scenarios.ai.sap.com/id: machine learning
+    ai.sap.com/version: '1.0'
 spec:
+  imagePullSecrets:
+    - name: dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlI
   entrypoint: mypipeline
   templates:
-  - name: mypipeline
-    steps:
-    - - name: greet
-        template: greeter
-  predictor:
-    imagePullSecrets:
-      - name: dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlI   # your docker registry secret
-
-  - name: greeter
-    container:
-      image: "docker.io/vikrambhat2/vb_model"
-      command: ["/bin/sh", "-c"]
-      args:
-        - "python /app/src/main.py"
+    - name: mypipeline
+      steps:
+        - - name: mypredictor
+            template: mycodeblock1
+    - name: mycodeblock1
+      container:
+        image: docker.io/vikrambhat2/vb_model
+        command:
+          - /bin/sh
+          - '-c'
+        args:
+          - python /app/src/main.py
