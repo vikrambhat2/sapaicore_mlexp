@@ -12,7 +12,7 @@ metadata:
     ai.sap.com/version: "1.0"
 spec:
   imagePullSecrets:
-    - name: "dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlIVIKRAM"
+    - name: "vbrepo"
   entrypoint: mypipeline
   templates:
     - name: mypipeline
