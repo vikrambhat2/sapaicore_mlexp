@@ -18,7 +18,7 @@ spec:
       - name: greetmessage
         type: string
   imagePullSecrets:
-    - name: dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlI
+    - name: 'dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlI'
   entrypoint: mypipeline
   templates:
     - name: mypipeline
