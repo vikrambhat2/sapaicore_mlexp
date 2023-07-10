@@ -27,7 +27,7 @@ spec:
             template: mycodeblock1
     - name: mycodeblock1
       container:
-        image: 'docker.io/vikrambhat2/vb_ml_model:latest'
+        image: docker.io/vikrambhat2/vb_ml_model:latest
         command:
           - /bin/sh
           - '-c'
