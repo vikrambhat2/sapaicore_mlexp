@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: ml-pipeline-3
+  name: ml-pipeline-4
   annotations:
     scenarios.ai.sap.com/description: "Tutorial to add demand response code to SAP AI Core"
     scenarios.ai.sap.com/name: "Demand response Code"
@@ -22,6 +22,11 @@ spec:
     - name: mycodeblock1
       container:
         image: docker.io/vikrambhat2/vb_ml_model:latest
+        ports:
+            - containerPort: 3000    # customizable port
+              protocol: TCP
         command: ["/bin/sh", "-c"]
         args:
-          - "python /app/src/main.py"
+          - >
+            set -e && echo "Starting" && gunicorn --chdir /app/src main:app -b 0.0.0.0:3000
+          
