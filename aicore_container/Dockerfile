@@ -35,7 +35,3 @@ ADD main.py main.py
 # Required to execute script
 RUN chgrp -R nogroup /app && \
     chmod -R 770 /app
-
-EXPOSE 3000
-
-CMD [ "gunicorn", "--bind", "0.0.0.0:3000", "main:app" ]
