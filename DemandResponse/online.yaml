@@ -1,24 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: ml-pipeline-2
+  name: ml-pipeline-3
   annotations:
-    scenarios.ai.sap.com/description: Tutorial to add demand response code to SAP AI Core
-    scenarios.ai.sap.com/name: 'Demand response Code '
-    executables.ai.sap.com/description: Trains model on demand response
-    executables.ai.sap.com/name: demand response
+    scenarios.ai.sap.com/description: "Tutorial to add demand response code to SAP AI Core"
+    scenarios.ai.sap.com/name: "Demand response Code"
+    executables.ai.sap.com/description: "Trains model on demand response"
+    executables.ai.sap.com/name: "demand response"
   labels:
-    scenarios.ai.sap.com/id: demand-response-code
-    ai.sap.com/version: '2.0'
+    scenarios.ai.sap.com/id: "demand-response-code"
+    ai.sap.com/version: "1.0"
 spec:
-  inputs:
-    artifacts:
-      - name: demandresponsemodel
-    parameters:
-      - name: greetmessage
-        type: string
   imagePullSecrets:
-    - name: 'dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlI'
+    - name: dckr_pat_vW3IT-Xd_bZkvIhQJjZqOwXHNlI
   entrypoint: mypipeline
   templates:
     - name: mypipeline
@@ -28,8 +22,6 @@ spec:
     - name: mycodeblock1
       container:
         image: docker.io/vikrambhat2/vb_ml_model:latest
-        command:
-          - /bin/sh
-          - '-c'
+        command: ["/bin/sh", "-c"]
         args:
-          - python /app/src/main.py
+          - "python /app/src/main.py"
