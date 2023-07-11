@@ -25,7 +25,12 @@ spec:
         ports:
             - containerPort: 3000    # customizable port
               protocol: TCP
-        command: ["python3"]
+        command:[
+                "gunicorn",
+                "--bind",
+                "0.0.0.0:3000",
+                "main:app"
+            ]
         args:
           - >
             set -e && echo "Starting" && gunicorn --chdir /app/src main:app -b 0.0.0.0:3000
