@@ -27,4 +27,4 @@ spec:
               protocol: TCP
         command: ["/bin/sh", "-c"]
         args:
-          - "python /app/src/main.py"
+          - "python /app/src/test.py"
