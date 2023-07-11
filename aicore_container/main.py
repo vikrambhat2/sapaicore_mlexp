@@ -1,3 +1,4 @@
+#!/bin/python3
 from flask import Flask, jsonify, request
 import pandas as pd
 import joblib
