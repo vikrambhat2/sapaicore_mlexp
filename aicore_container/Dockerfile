@@ -29,6 +29,7 @@ COPY scikit_model.pkl /app/src/scikit_model.pkl
 COPY requirements.txt /app/src/requirements.txt
 # RUN pip install -r /app/src/requirements.txt
 
+
 ADD ./model ./model
 ADD main.py main.py
 
