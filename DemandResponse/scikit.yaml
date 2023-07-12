@@ -1,30 +1,39 @@
-apiVersion: argoproj.io/v1alpha1
-kind: WorkflowTemplate
+apiVersion: ai.sap.com/v1alpha1
+kind: ServingTemplate
 metadata:
-  name: ml-pipeline-4
+  name: server-pipeline # executable ID, must be unique across your SAP AI Core instance, for example use `server-pipeline-yourname-1234`
   annotations:
-    scenarios.ai.sap.com/description: "Tutorial to add demand response code to SAP AI Core"
-    scenarios.ai.sap.com/name: "Demand response Code"
-    executables.ai.sap.com/description: "Trains model on demand response"
-    executables.ai.sap.com/name: "demand response"
+    scenarios.ai.sap.com/description: "Learning to predict house price"
+    scenarios.ai.sap.com/name: "House Price (Tutorial)"
+    executables.ai.sap.com/description: "Create online server to make live predictions"
+    executables.ai.sap.com/name: "server"
+    artifacts.ai.sap.com/housepricemodel.kind: "model" # Suggest the kind of artifact to input.
   labels:
-    scenarios.ai.sap.com/id: "demand-response-code"
-    ai.sap.com/version: "2.0"
+    scenarios.ai.sap.com/id: "learning-datalines"
+    ai.sap.com/version: "1.0"
 spec:
-  imagePullSecrets:
-    - name: "vbrepo"
-  entrypoint: mypipeline
-  templates:
-    - name: mypipeline
-      steps:
-        - - name: mypredictor
-            template: mycodeblock1
-    - name: mycodeblock1
-      container:
-        image: docker.io/vikrambhat2/vb_ml_model:latest
-        ports:
+  inputs:
+    artifacts:
+      - name: demandresponsemodel # placeholder name, do not add `-` in value use only alphanumeric chars
+  template:
+    apiVersion: "serving.kserve.io/v1beta1"
+    metadata:
+      labels: |
+        ai.sap.com/resourcePlan: infer.s # computing power
+    spec: |
+      predictor:
+        imagePullSecrets:
+          - name: vbrepo   # your docker registry secret
+        containers:
+        - name: kserve-container
+          image: docker.io/vikrambhat2/byom_model:latest
+          ports:
             - containerPort: 3000    # customizable port
               protocol: TCP
-        command: ["/bin/sh", "-c"]
-        args:
-          - "python /app/src/test.py"
+          command: ["/bin/sh", "-c"]
+          args:
+            - "python /app/src/main.py"
+          env:
+            - name: STORAGE_URI # Required
+              value: "{{inputs.artifacts.demandresponsemodel}}" # Required reference from artifact name, see above
+
