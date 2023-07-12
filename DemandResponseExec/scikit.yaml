@@ -18,9 +18,9 @@ spec:
   template:
     apiVersion: "serving.kserve.io/v1beta1"
     metadata:
-      labels: 
+      labels: |
         ai.sap.com/resourcePlan: starter # computing power
-    spec: 
+    spec: |
       predictor:
         imagePullSecrets:
           - name: vbrepo   # your docker registry secret
