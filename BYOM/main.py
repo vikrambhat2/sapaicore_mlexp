@@ -1,0 +1,48 @@
+#!/bin/python3
+from flask import Flask, jsonify, request
+import pandas as pd
+import joblib
+import pickle
+import os
+
+# load model
+model_folder=os.environ['SERVE_FILES_PATH']
+model = joblib.load(os.path.join(model_folder, "scikit_model.pkl"))
+
+app = Flask(__name__)
+#port = int(os.getenv("PORT", 9009))
+
+@app.route("/", methods=["GET"])
+def vik():
+
+    return "Hello from second script!"
+        
+    
+@app.route("/v2/greet", methods=["GET"])
+def status():
+    global model
+    if model is None:
+        return "Flask Code: Model was not loaded."
+    else:
+        return "New Model is loaded."
+    
+@app.route("/v2/predict", methods=["POST"])
+def predict():
+	
+    global model
+    payload = request.get_json()
+    cols=[]
+    for i in range(0,3):
+        columns=model.named_steps['preprocessor'].transformers_[i][2]
+        cols = cols+columns
+    df=pd.DataFrame(payload['Input'],columns=payload['Headers'])
+    df_score=df[cols].copy()
+    result=model.predict_proba(df_score)
+    output = {'results': result[0].tolist()[0]}
+    return jsonify(output)
+
+
+if __name__ == "__main__":
+    print("Serving Initializing")
+    print("Serving Started")
+    app.run(host="0.0.0.0", debug=True, port=3000)

@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: ml-pipeline-4
+  annotations:
+    scenarios.ai.sap.com/description: "Tutorial to add demand response code to SAP AI Core"
+    scenarios.ai.sap.com/name: "Demand response Code"
+    executables.ai.sap.com/description: "Trains model on demand response"
+    executables.ai.sap.com/name: "demand response"
+  labels:
+    scenarios.ai.sap.com/id: "demand-response-code"
+    ai.sap.com/version: "2.0"
+spec:
+  imagePullSecrets:
+    - name: "vbrepo"
+  entrypoint: mypipeline
+  templates:
+    - name: mypipeline
+      steps:
+        - - name: mypredictor
+            template: mycodeblock1
+    - name: mycodeblock1
+      container:
+        image: docker.io/vikrambhat2/vb_ml_model:latest
+        ports:
+            - containerPort: 3000    # customizable port
+              protocol: TCP
+        command: ["/bin/sh", "-c"]
+        args:
+          - "python /app/src/test.py"
