@@ -1,7 +1,7 @@
 apiVersion: ai.sap.com/v1alpha1
 kind: ServingTemplate
 metadata:
-  name: server-pipeline # executable ID, must be unique across your SAP AI Core instance, for example use `server-pipeline-yourname-1234`
+  name: scikit-pipeline # executable ID, must be unique across your SAP AI Core instance, for example use `server-pipeline-yourname-1234`
   annotations:
     scenarios.ai.sap.com/description: "Learning to predict house price"
     scenarios.ai.sap.com/name: "House Price (Tutorial)"
@@ -9,7 +9,7 @@ metadata:
     executables.ai.sap.com/name: "server"
     artifacts.ai.sap.com/housepricemodel.kind: "model" # Suggest the kind of artifact to input.
   labels:
-    scenarios.ai.sap.com/id: "learning-datalines"
+    scenarios.ai.sap.com/id: "demandresponse-demo"
     ai.sap.com/version: "1.0"
 spec:
   inputs:
