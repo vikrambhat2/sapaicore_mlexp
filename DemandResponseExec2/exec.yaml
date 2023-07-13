@@ -1,4 +1,4 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: ai.sap.com/v1alpha1
 kind: ServingTemplate
 metadata:
   name: vb-pipeline-1
