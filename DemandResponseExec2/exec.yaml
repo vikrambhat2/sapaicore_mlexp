@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ServingTemplate
+metadata:
+  name: vb-pipeline-1
+  annotations:
+    scenarios.ai.sap.com/description: "Tutorial to add demand response code to SAP AI Core"
+    scenarios.ai.sap.com/name: "Demand response Code"
+    executables.ai.sap.com/description: "Trains model on demand response"
+    executables.ai.sap.com/name: "demand response"
+  labels:
+    scenarios.ai.sap.com/id: "demand-response-code"
+    ai.sap.com/version: "2.0"
+spec:
+  template:
+    apiVersion: "serving.kserve.io/v1beta1"
+    metadata:
+      labels: |
+        ai.sap.com/resourcePlan: starter # computing power
+    spec: |
+      predictor:
+        imagePullSecrets:
+          - name: vbrepo   # your docker registry secret
+        containers:
+        - name: kserve-container
+          image: docker.io/vikrambhat2/vb_ml_model:latest
+          ports:
+            - containerPort: 3000    # customizable port
+              protocol: TCP
+          command: ["/bin/sh", "-c"]
+          args:
+            - "python /app/src/main.py"
