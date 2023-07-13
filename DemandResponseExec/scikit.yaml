@@ -7,7 +7,7 @@ metadata:
     scenarios.ai.sap.com/name: "Demand Response (Tutorial)"
     executables.ai.sap.com/description: "Create online server to make live predictions"
     executables.ai.sap.com/name: "server"
-    artifacts.ai.sap.com/housepricemodel.kind: "model" # Suggest the kind of artifact to input.
+    artifacts.ai.sap.com/demandresponsemodel.kind: "model" # Suggest the kind of artifact to input.
   labels:
     scenarios.ai.sap.com/id: "demandresponse-demo"
     ai.sap.com/version: "1.0"
@@ -36,4 +36,5 @@ spec:
           env:
             - name: STORAGE_URI # Required
               value: "{{inputs.artifacts.demandresponsemodel}}" # Required reference from artifact name, see above
+
 
