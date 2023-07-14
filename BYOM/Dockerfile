@@ -9,7 +9,7 @@ RUN pip3 install --upgrade distlib
 # linking them together. Likewise, pip leaves the install caches populated which uses
 # a significant amount of space. These optimizations save a fair amount of space in the
 # image, which reduces start up time.
-RUN pip3 --no-cache-dir install numpy scipy scikit-learn==1.0.2 pandas flask gunicorn 
+RUN pip3 --no-cache-dir install numpy scipy scikit-learn==1.0.2 pandas flask==2.2 gunicorn 
 
 # Set some environment variables. PYTHONUNBUFFERED keeps Python from buffering our standard
 # output stream, which means that logs can be delivered to the user quickly. PYTHONDONTWRITEBYTECODE
@@ -27,11 +27,8 @@ RUN mkdir -p /app/src
 COPY main.py /app/src/
 
 
-# COPY requirements.txt /app/src/requirements.txt
-# RUN pip install -r /app/src/requirements.txt
-
-
 # Required to execute script
 RUN chgrp -R nogroup /app && \
     chmod -R 770 /app
     
+ADD main.py main.py

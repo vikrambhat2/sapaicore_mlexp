@@ -6,25 +6,25 @@ import pickle
 import os
 
 # load model
-model_folder=os.environ['SERVE_FILES_PATH']
-model = joblib.load(os.path.join(model_folder, "scikit_model.pkl"))
-
 app = Flask(__name__)
-#port = int(os.getenv("PORT", 9009))
+model = None
 
-@app.route("/", methods=["GET"])
-def vik():
+@app.before_first_request
+def init():
+    """
+    Load model else crash, deployment will not start
+    """
+    global model
+    model = pickle.load(open ('/mnt/models/scikit_model.pkl','rb')) # All the model files will be read from /mnt/models
+    return None
 
-    return "Hello from second script!"
-        
-    
 @app.route("/v2/greet", methods=["GET"])
 def status():
     global model
     if model is None:
         return "Flask Code: Model was not loaded."
     else:
-        return "New Model is loaded."
+        return "Model is loaded."
     
 @app.route("/v2/predict", methods=["POST"])
 def predict():
