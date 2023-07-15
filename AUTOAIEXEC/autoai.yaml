@@ -1,0 +1,34 @@
+apiVersion: ai.sap.com/v1alpha1
+kind: ServingTemplate
+metadata:
+  name: auto-pipeline # executable ID, must be unique across your SAP AI Core instance, for example use `server-pipeline-yourname-1234`
+  annotations:
+    scenarios.ai.sap.com/description: "Learning to predict demand response"
+    scenarios.ai.sap.com/name: "Demand Response (Auto AI Tutorial)"
+    executables.ai.sap.com/description: "Create online server to make live predictions on Auto-AI model"
+    executables.ai.sap.com/name: "server"# Suggest the kind of artifact to input.
+  labels:
+    scenarios.ai.sap.com/id: "demandresponse-autoai"
+    ai.sap.com/version: "1.0"
+spec:
+  template:
+    apiVersion: "serving.kserve.io/v1beta1"
+    metadata:
+      labels: |
+        ai.sap.com/resourcePlan: starter # computing power
+    spec: |
+      predictor:
+        imagePullSecrets:
+          - name: vbrepo   # your docker registry secret
+        containers:
+        - name: kserve-container
+          image: vikrambhat2/vb_autoai_model:latest
+          ports:
+            - containerPort: 7000    # customizable port
+              protocol: TCP
+          command: ["/bin/sh", "-c"]
+          args:
+            - >
+              set -e && echo "Starting" && gunicorn --chdir /app/src auto:app -b 0.0.0.0:7000
+
+
