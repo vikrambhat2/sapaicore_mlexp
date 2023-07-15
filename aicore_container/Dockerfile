@@ -23,7 +23,6 @@ ENV PYTHONDONTWRITEBYTECODE=TRUE
 
 RUN mkdir -p /app/src
 COPY main.py /app/src/
-COPY test.py /app/src/
 COPY scikit_model.pkl /app/src/scikit_model.pkl
 COPY requirements.txt /app/src/requirements.txt
 # RUN pip install -r /app/src/requirements.txt
@@ -31,7 +30,6 @@ COPY requirements.txt /app/src/requirements.txt
 
 ADD ./model ./model
 ADD main.py main.py
-ADD test.py test.py
 
 # Required to execute script
 RUN chgrp -R nogroup /app && \
