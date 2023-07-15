@@ -11,6 +11,10 @@ metadata:
     scenarios.ai.sap.com/id: "demandresponse-autoai"
     ai.sap.com/version: "1.0"
 spec:
+  inputs:
+    parameters:
+      - name: greetmessage # placeholder name
+        type: string
   template:
     apiVersion: "serving.kserve.io/v1beta1"
     metadata:
@@ -30,5 +34,9 @@ spec:
           args:
             - >
               set -e && echo "Starting" && gunicorn --chdir /app/src auto:app -b 0.0.0.0:7000
+          env:
+            - name: greetingmessage # different name to avoid confusion
+              value: "{{inputs.parameters.greetmessage}}"
+
 
 
