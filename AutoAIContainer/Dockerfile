@@ -16,7 +16,7 @@ RUN pip3 install --upgrade distlib
 
 
 
-RUN pip3 --no-cache-dir install numpy scipy pandas flask gunicorn scikit-learn==1.0.2
+RUN pip3 --no-cache-dir install numpy scipy pandas flask gunicorn scikit-learn==1.0.2 autoai-libs==1.13.4
 
 
 # Set some environment variables. PYTHONUNBUFFERED keeps Python from buffering our standard
@@ -32,7 +32,7 @@ ENV PYTHONDONTWRITEBYTECODE=TRUE
 
 RUN mkdir -p /app/src
 COPY auto.py /app/src/
-COPY autoai_scikit_model.pkl /app/src/autoai_scikit_model.pkl
+COPY auto-ai-pipeline.pickle /app/src/auto-ai-pipeline.pickle
 
 ADD auto.py auto.py
 

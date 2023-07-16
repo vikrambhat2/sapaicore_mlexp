@@ -7,7 +7,7 @@ import sklearn
 import pandas as pd
 import subprocess
 import sys
-subprocess.check_call([sys.executable,'-m', 'pip', 'install',  "autoai-libs==1.13.4"])
+#subprocess.check_call([sys.executable,'-m', 'pip', 'install',  "autoai-libs==1.13.4"])
 #subprocess.check_call([sys.executable,'-m', 'pip', 'install',  "scikit-learn==1.0.2"])
 
 
@@ -35,7 +35,7 @@ def predict():
     
     global model
     payload = request.get_json()
-    df=pd.DataFrame(payload)
+    df=pd.DataFrame(payload['Input'],columns=payload['Headers'])
     
     probs=model.predict_proba(df.values).tolist()
     preds=model.predict(df.values).tolist()
