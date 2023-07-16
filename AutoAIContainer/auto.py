@@ -1,22 +1,20 @@
 #!/bin/python3
 from flask import Flask, jsonify, request
-import subprocess
-import sys
-subprocess.check_call([sys.executable,'-m', 'pip', 'install',  "autoai-libs==1.13.4"])
-
 import joblib
 import os
 import json
 import sklearn
 import pandas as pd
+import subprocess
+import sys
+subprocess.check_call([sys.executable,'-m', 'pip', 'install',  "autoai-libs==1.13.4"])
+#subprocess.check_call([sys.executable,'-m', 'pip', 'install',  "scikit-learn==1.0.2"])
 
-import warnings
-warnings.filterwarnings("ignore")
 
 
 app = Flask(__name__)
 #port = int(os.getenv("PORT", 9009))
-model = joblib.load("autoai_scikit_model.pkl")
+model = joblib.load("auto-ai-pipeline.pickle")
 @app.route("/", methods=["GET"])
 def vik():
 
@@ -34,7 +32,7 @@ def status():
 
 @app.route("/v2/predict", methods=["POST"])
 def predict():
-	
+    
     global model
     payload = request.get_json()
     df=pd.DataFrame(payload)
