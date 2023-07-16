@@ -26,7 +26,7 @@ spec:
           - name: vbrepo   # your docker registry secret
         containers:
         - name: kserve-container
-          image: vikrambhat2/vb_autoai_model:latest
+          image: vikrambhat2/deploy_autoai_model:latest
           ports:
             - containerPort: 7000    # customizable port
               protocol: TCP

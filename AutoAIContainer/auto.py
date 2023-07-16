@@ -1,13 +1,17 @@
 #!/bin/python3
 from flask import Flask, jsonify, request
+import subprocess
+import sys
+subprocess.check_call([sys.executable,'-m', 'pip', 'install',  "autoai-libs==1.13.4"])
+
 import joblib
 import os
 import json
 import sklearn
 import pandas as pd
-import subprocess
-import sys
 
+import warnings
+warnings.filterwarnings("ignore")
 
 
 app = Flask(__name__)
