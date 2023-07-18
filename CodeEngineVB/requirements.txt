@@ -1,0 +1,2 @@
+ai-core-sdk
+flask==2.2
