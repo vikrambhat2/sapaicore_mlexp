@@ -10,11 +10,11 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-print(os.getenv("BASEURL"))
-@app.before_first_request
-def init():
-    return "Main page for Vikram Bhat"
 
+@app.route("/", methods=["GET"])
+def home():
+    return "This application is deployed on IBM Cloud Engine. The application calls SAP AI Core endpoint to predict demand response "
+        
 @app.route("/v2/greet", methods=["GET"])
 def status():
     if os.getenv("BASEURL"):
