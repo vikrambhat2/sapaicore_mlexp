@@ -5,52 +5,51 @@ import os
 from ai_core_sdk.ai_core_v2_client import AICoreV2Client
 # load model
 app = Flask(__name__)
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 
+print(os.getenv("BASEURL"))
 @app.before_first_request
 def init():
     return "Main page for Vikram Bhat"
 
 @app.route("/v2/greet", methods=["GET"])
 def status():
-    return "Model is loaded."
+    if os.getenv("BASEURL"):
+        return os.getenv("BASEURL")
+    else:
+        return "ENV not found"
     
 @app.route("/v2/predict", methods=["POST"])
 def predict():
-    global model
-    test_input = request.get_json()
-    cols=[]
-    for i in range(0,3):
-        columns=model.named_steps['preprocessor'].transformers_[i][2]
-        cols = cols+columns
-    df=pd.DataFrame(payload['Input'],columns=payload['Headers'])
-    df_score=df[cols].copy()
-    result=model.predict_proba(df_score)
-    output = {'results': result[0].tolist()[0]}
-    return jsonify(output)
-    
-    
+
 
     ai_core_client = AICoreV2Client(
     # `AI_API_URL`
-       base_url = "https://api.ai.prod.us-east-1.aws.ml.hana.ondemand.com" + "/v2", # The present SAP AI Core API version is 2
+       base_url = os.getenv("BASEURL"),
     # `URL`
-       auth_url=  "https://ibm-subaccount-us-ro95qjau.authentication.us10.hana.ondemand.com" + "/oauth/token",
+       auth_url =  os.getenv("AUTHURL"),
     # `clientid`
-      client_id = "sb-1fb7b146-d102-4323-a136-4406df71d9bd!b175080|aicore!b164",
+      client_id = os.getenv("CLIENTID"),
     # `clientsecret`
-      client_secret = "e059b60a-275e-4c61-8754-ea0431602a04$YhJ1xNLXI4mE1_fMLK9GPR1-8dkigv2DLyKwQlX6r6w="
+      client_secret = os.getenv("CLIENTSECRET")
     )
 
-    deployment_url = "https://api.ai.prod.us-east-1.aws.ml.hana.ondemand.com/v2/inference/deployments/db1da51d03258bed"
+    deployment_url = os.getenv("DEPLOYMENTURL")
 
     test_input = request.get_json()
+    
+    test_json={}
+    test_json['Headers']=test_input['input_data'][0]['fields']
+    test_json['Input']=test_input['input_data'][0]['values']
     
     endpoint = f"{deployment_url}/v2/predict" # endpoint implemented in serving engine
     headers = {"Authorization": ai_core_client.rest_client.get_token(),
                'ai-resource-group': "default",
                "Content-Type": "application/json"}
-    response = requests.post(endpoint, headers=headers, json=test_input)
+    response = requests.post(endpoint, headers=headers, json=test_json)
 
     return response.json()
 
