@@ -50,10 +50,9 @@ def predict():
                'ai-resource-group': "default",
                "Content-Type": "application/json"}
     response = requests.post(endpoint, headers=headers, json=test_json)
-
-    return response.json()
-
-    
+    response2=response.json()['predictions']
+    response3={'predictions': [ {"fields": ['prediction','probability'], "values": [[response2[i]['prediction'], response2[i]['probability']] for i in range(len(response2))]}]}
+    return response3  
     
     
     
