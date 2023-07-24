@@ -8,4 +8,4 @@ Folder details: <br>
 
 **DemandResponse**:contains executable to deploy a docker image. Artifacts related to this are located in Deploy Sci-kit model folder. <br>
 
-**Deploy Sci-kit model** :Contains docker image to call sci-kit model and create a flask app. A notebook to deploy the docker image on SAP AI Core. <br>
+**aicore_container** :Contains docker image to call sci-kit model and create a flask app. A notebook to deploy the docker image on SAP AI Core. <br>
