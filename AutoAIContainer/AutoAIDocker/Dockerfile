@@ -35,7 +35,12 @@ COPY auto.py /app/src/
 COPY auto-ai-pipeline.pickle /app/src/auto-ai-pipeline.pickle
 
 ADD auto.py auto.py
+ADD auto-ai-pipeline.pickle auto-ai-pipeline.pickle
 
 # Required to execute script
 RUN chgrp -R nogroup /app && \
     chmod -R 770 /app
+    
+# EXPOSE 7000
+
+# CMD ["python", "auto.py"]
