@@ -6,8 +6,8 @@ docker buildx build --platform linux/amd64 -t vikrambhat2/deploy_autoai_model:la
 
 
 ```
-docker build --platform linux/amd64 -t codetest_vb:latest .
-docker run --platform linux/amd64 -d -p  8080:5000 codetest_vb:latest
+docker build --platform linux/amd64 -t deploy_autoai_model:latest .
+docker run --platform linux/amd64 -d -p  8080:7000 deploy_autoai_model:latest
 
 curl 0.0.0.0:8080
 ```
