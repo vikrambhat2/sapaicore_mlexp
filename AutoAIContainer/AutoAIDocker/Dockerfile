@@ -14,8 +14,6 @@ RUN pip3 install --upgrade distlib
 # image, which reduces start up time.
 
 
-
-
 RUN pip3 --no-cache-dir install numpy scipy pandas flask gunicorn scikit-learn==1.0.2 autoai-libs==1.13.4
 
 
@@ -41,6 +39,6 @@ ADD auto-ai-pipeline.pickle auto-ai-pipeline.pickle
 RUN chgrp -R nogroup /app && \
     chmod -R 770 /app
     
-# EXPOSE 7000
+EXPOSE 7000
 
-# CMD ["python", "auto.py"]
+CMD ["python", "auto.py"]

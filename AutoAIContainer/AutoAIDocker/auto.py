@@ -1,26 +1,18 @@
 #!/bin/python3
-from flask import Flask, jsonify, request
-import joblib
 import os
-import json
-import sklearn
+import joblib
 import pandas as pd
-import subprocess
-import sys
-#subprocess.check_call([sys.executable,'-m', 'pip', 'install',  "autoai-libs==1.13.4"])
-#subprocess.check_call([sys.executable,'-m', 'pip', 'install',  "scikit-learn==1.0.2"])
-
-
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
-#port = int(os.getenv("PORT", 9009))
+
+# Load the machine learning model
 model = joblib.load("auto-ai-pipeline.pickle")
+
 @app.route("/", methods=["GET"])
 def vik():
+    return "This REST API call predicts the demand response of a customer. Use POST /v2/predict with your payload!"
 
-    return "This REST API call predicts demand response of a customer. use POST /v2/predict with your payload!"
-    
-    
 @app.route("/v2/greet", methods=["GET"])
 def status():
     global model
@@ -28,23 +20,25 @@ def status():
         return "Flask Code: Model was not loaded."
     else:
         return "Demand Response Model is loaded."
-        
 
 @app.route("/v2/predict", methods=["POST"])
 def predict():
-    
     global model
     payload = request.get_json()
+    payload = payload['input_data'][0]
+    df = pd.DataFrame(payload['values'], columns=payload['fields'])
     
-    df=pd.DataFrame(payload['input_data'][0]['values'],columns=payload['input_data'][0]['fields'])
-    
-    probs=model.predict_proba(df.values).tolist()
-    preds=model.predict(df.values).tolist()
-    res =[{'prediction':preds[i], 'probability':probs[i]} for i in range(len(preds))]
-    output= {'predictions': [ {"fields": ['prediction','probability'], "values": [[res[i]['prediction'], res[i]['probability']] for i in range(len(res))]}]}
+    probs = model.predict_proba(df.values).tolist()
+    preds = model.predict(df.values).tolist()
+    res = [{'prediction': preds[i], 'probability': probs[i]} for i in range(len(preds))]
+    output = {
+        'predictions': [{
+            "fields": ['prediction', 'probability'],
+            "values": [[res[i]['prediction'], res[i]['probability']] for i in range(len(res))]
+        }]
+    }
 
     return jsonify(output)
-
 
 if __name__ == "__main__":
     print("Serving Initializing")
