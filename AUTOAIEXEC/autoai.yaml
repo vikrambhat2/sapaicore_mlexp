@@ -1,47 +1,44 @@
 apiVersion: ai.sap.com/v1alpha1
 kind: ServingTemplate
 metadata:
-  name: auto-pipeline # executable ID, must be unique across your SAP AI Core instance, for example use `server-pipeline-yourname-1234`
+  name: auto-pipeline
   annotations:
     scenarios.ai.sap.com/description: "Learning to predict demand response"
     scenarios.ai.sap.com/name: "Demand Response (Auto AI Tutorial)"
     executables.ai.sap.com/description: "Create online server to make live predictions on Auto-AI model"
-    executables.ai.sap.com/name: "server"# Suggest the kind of artifact to input.
+    executables.ai.sap.com/name: "server"
   labels:
     scenarios.ai.sap.com/id: "demandresponse-autoai"
     ai.sap.com/version: "1.0"
 spec:
   inputs:
     parameters:
-      - name: greetmessage # placeholder name
+      - name: greetmessage
         type: string
   template:
     apiVersion: "serving.kserve.io/v1beta1"
     metadata:
       labels: |
-        ai.sap.com/resourcePlan: starter # computing power
+        ai.sap.com/resourcePlan: starter
     spec: |
       predictor:
         imagePullSecrets:
-          - name: vbrepo   # your docker registry secret
+          - name: vbrepo
         containers:
-        - name: kserve-container
-          image: vikrambhat2/deploy_autoai_model:latest
-          ports:
-            - containerPort: 7000    # customizable port
-              protocol: TCP
-          command: ["/bin/sh", "-c"]
-          args:
-            - >
-              set -e && echo "Starting" && gunicorn --chdir /app/src auto:app -b 0.0.0.0:7000
-          env:
-            - name: OPENSCALE_CREDS # Name of the environment variable that will be available in the image
-              valueFrom:
-                secretKeyRef:
-                    name: openscale-secrets  # Name of the generic secret created in SAP AI Core for the Resource Group
-                    key: credentials    # Name of the key from the JSON string that is saved as generic secret    
-            - name: greetingmessage # different name to avoid confusion
-              value: "{{inputs.parameters.greetmessage}}"
-
-
-
+          - name: kserve-container
+            image: vikrambhat2/deploy_autoai_model:latest
+            ports:
+              - containerPort: 7000
+                protocol: TCP
+            command: ["/bin/sh", "-c"]
+            args:
+              - >
+                set -e && echo "Starting" && gunicorn --chdir /app/src auto:app -b 0.0.0.0:7000
+            env:
+              - name: OPENSCALE_CREDS
+                valueFrom:
+                  secretKeyRef:
+                    name: openscale-secrets
+                    key: credentials
+              - name: greetingmessage
+                value: "{{inputs.parameters.greetmessage}}"
