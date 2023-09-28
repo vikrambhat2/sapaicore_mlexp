@@ -14,8 +14,8 @@ RUN pip3 install --upgrade distlib
 # image, which reduces start up time.
 
 
-RUN pip3 --no-cache-dir install numpy scipy pandas flask gunicorn scikit-learn==1.0.2 autoai-libs==1.13.4
-
+RUN pip3 --no-cache-dir install numpy scipy pandas flask gunicorn scikit-learn==1.0.2 autoai-libs==1.13.4 ibm-cloud-sdk-core==3.16.7 ibm_watson_openscale python-dotenv
+# Set environment variables from the .env file
 
 # Set some environment variables. PYTHONUNBUFFERED keeps Python from buffering our standard
 # output stream, which means that logs can be delivered to the user quickly. PYTHONDONTWRITEBYTECODE
@@ -30,15 +30,17 @@ ENV PYTHONDONTWRITEBYTECODE=TRUE
 
 RUN mkdir -p /app/src
 COPY auto.py /app/src/
+COPY .env /app/src/
 COPY auto-ai-pipeline.pickle /app/src/auto-ai-pipeline.pickle
 
 ADD auto.py auto.py
 ADD auto-ai-pipeline.pickle auto-ai-pipeline.pickle
-
+ADD .env .env
 # Required to execute script
 RUN chgrp -R nogroup /app && \
     chmod -R 770 /app
     
 EXPOSE 7000
 
+#
 CMD ["python", "auto.py"]
