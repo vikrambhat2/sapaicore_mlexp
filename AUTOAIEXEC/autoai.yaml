@@ -35,7 +35,7 @@ spec:
             - >
               set -e && echo "Starting" && gunicorn --chdir /app/src auto:app -b 0.0.0.0:7000
           env:
-            - name: HANA_ADDRESS # Name of the environment variable that will be available in the image
+            - name: OPENSCALE_CREDS # Name of the environment variable that will be available in the image
               valueFrom:
                 secretKeyRef:
                     name: openscale-secrets  # Name of the generic secret created in SAP AI Core for the Resource Group
